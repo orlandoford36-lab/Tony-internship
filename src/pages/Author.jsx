@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AuthorBanner from "../images/author_banner.jpg";
 import AuthorItems from "../components/author/AuthorItems";
 import { Link } from "react-router-dom";
-import AuthorImage from "../images/author_thumbnail.jpg";
+import Skeleton from "../components/UI/Skeleton";
 
 const Author = () => {
+  const [author, setAuthor] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const authorId = params.get("author") || "73855012";
+
+    setLoading(true);
+    fetch(
+      `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${authorId}`
+    )
+      .then((res) => res.json())
+      .then((data) => setAuthor(data))
+      .catch(() => setAuthor(null))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
@@ -25,26 +42,41 @@ const Author = () => {
                 <div className="d_profile de-flex">
                   <div className="de-flex-col">
                     <div className="profile_avatar">
-                      <img src={AuthorImage} alt="" />
+                      {loading ? (
+                        <Skeleton width="150px" height="150px" borderRadius="50%" />
+                      ) : (
+                        <img
+                          src={author?.authorImage || "/images/author_thumbnail.jpg"}
+                          alt="author"
+                        />
+                      )}
 
                       <i className="fa fa-check"></i>
                       <div className="profile_name">
                         <h4>
-                          Monica Lucas
-                          <span className="profile_username">@monicaaaa</span>
-                          <span id="wallet" className="profile_wallet">
-                            UDHUHWudhwd78wdt7edb32uidbwyuidhg7wUHIFUHWewiqdj87dy7
-                          </span>
-                          <button id="btn_copy" title="Copy Text">
-                            Copy
-                          </button>
+                          {loading ? (
+                            <Skeleton width="240px" height="20px" />
+                          ) : (
+                            <>
+                              {author?.authorName}
+                              <span className="profile_username">@{author?.tag}</span>
+                              <span id="wallet" className="profile_wallet">
+                                {author?.address}
+                              </span>
+                              <button id="btn_copy" title="Copy Text">
+                                Copy
+                              </button>
+                            </>
+                          )}
                         </h4>
                       </div>
                     </div>
                   </div>
                   <div className="profile_follow de-flex">
                     <div className="de-flex-col">
-                      <div className="profile_follower">573 followers</div>
+                      <div className="profile_follower">
+                        {loading ? <Skeleton width="80px" height="20px" /> : `${author?.followers} followers`}
+                      </div>
                       <Link to="#" className="btn-main">
                         Follow
                       </Link>
@@ -55,7 +87,7 @@ const Author = () => {
 
               <div className="col-md-12">
                 <div className="de_tab tab_simple">
-                  <AuthorItems />
+                  <AuthorItems items={author?.nftCollection} loading={loading} />
                 </div>
               </div>
             </div>
