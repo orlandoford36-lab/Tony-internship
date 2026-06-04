@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import AOS from "aos";
 import { Link } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
 
@@ -24,6 +25,12 @@ const ExploreItems = () => {
       });
   }, [filter]);
 
+  useEffect(() => {
+    if (!loading) {
+      AOS.refresh();
+    }
+  }, [loading]);
+
   const sellers = loading ? new Array(8).fill({}) : items;
 
   return (
@@ -48,9 +55,9 @@ const ExploreItems = () => {
             className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
             style={{ display: "block", backgroundSize: "cover" }}
           >
-            <div className="nft__item">
+            <div className="nft__item" data-aos="fade-up">
               <div className="author_list_pp">
-                <Link to="/author" data-bs-toggle="tooltip" data-bs-placement="top">
+                <Link to={`/author?author=${item.authorId}`} data-bs-toggle="tooltip" data-bs-placement="top">
                   {loading ? (
                     <Skeleton width={60} height={60} borderRadius="50%" />
                   ) : (
@@ -92,7 +99,7 @@ const ExploreItems = () => {
                 {loading ? (
                   <Skeleton width="100%" height={240} borderRadius={16} />
                 ) : (
-                  <Link to="/item-details">
+                  <Link to={`/item-details/${item.nftId}`}>
                     <img src={item.nftImage} className="lazy nft__item_preview" alt={item.title} />
                   </Link>
                 )}
@@ -107,7 +114,7 @@ const ExploreItems = () => {
                   </>
                 ) : (
                   <>
-                    <Link to="/item-details">
+                    <Link to={`/item-details/${item.nftId}`}>
                       <h4>{item.title}</h4>
                     </Link>
                     <div className="nft__item_price">{item.price} ETH</div>

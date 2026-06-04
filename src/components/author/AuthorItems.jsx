@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import AOS from "aos";
 import { Link } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
 
 const AuthorItems = ({ items, loading }) => {
+  useEffect(() => {
+    if (!loading) {
+      AOS.refresh();
+    }
+  }, [loading]);
+
   const renderPlaceholder = (i) => (
     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={"skel-" + i}>
       <div className="nft__item">
@@ -25,9 +32,9 @@ const AuthorItems = ({ items, loading }) => {
 
   const renderItem = (item) => (
     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={item.id}>
-      <div className="nft__item">
+      <div className="nft__item" data-aos="zoom-in">
         <div className="author_list_pp">
-          <Link to="">
+          <Link to={`/author?author=${item.authorId || item.authorId}`}>
             <img className="lazy" src={item.authorImage || "/images/author_thumbnail.jpg"} alt="" />
             <i className="fa fa-check"></i>
           </Link>
@@ -50,12 +57,12 @@ const AuthorItems = ({ items, loading }) => {
               </div>
             </div>
           </div>
-          <Link to="/item-details">
+          <Link to={`/item-details/${item.nftId}`}>
             <img src={item.nftImage} className="lazy nft__item_preview" alt="" />
           </Link>
         </div>
         <div className="nft__item_info">
-          <Link to="/item-details">
+          <Link to={`/item-details/${item.nftId}`}>
             <h4>{item.title}</h4>
           </Link>
           <div className="nft__item_price">{item.price} ETH</div>

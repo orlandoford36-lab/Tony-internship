@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import AOS from "aos";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import Skeleton from "../UI/Skeleton";
@@ -80,6 +81,12 @@ const HotCollections = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      AOS.refresh();
+    }
+  }, [loading]);
+
   const skeletonCards = Array.from({ length: 4 }, (_, index) => (
     <div key={index} className="col-lg-3 col-md-6 col-sm-12 mb-4">
       <div className="nft_coll">
@@ -142,9 +149,9 @@ const HotCollections = () => {
               >
                 {collections.map((item) => (
                   <div key={item.id} className="px-2">
-                    <div className="nft_coll">
+                    <div className="nft_coll" data-aos="fade-right">
                       <div className="nft_wrap">
-                        <Link to="/item-details">
+                        <Link to={`/item-details/${item.nftId}`}>
                           <img
                             src={item.nftImage}
                             className="lazy img-fluid"
@@ -153,7 +160,7 @@ const HotCollections = () => {
                         </Link>
                       </div>
                       <div className="nft_coll_pp">
-                        <Link to="/author">
+                        <Link to={`/author?author=${item.authorId}`}>
                           <img
                             className="lazy pp-coll"
                             src={item.authorImage}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import AOS from "aos";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -99,6 +100,12 @@ const NewItems = () => {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      AOS.refresh();
+    }
+  }, [loading]);
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -155,10 +162,10 @@ const NewItems = () => {
               <Slider {...sliderSettings}>
                 {items.map((item) => (
                   <div key={item.id} className="px-2">
-                    <div className="nft__item">
+                    <div className="nft__item" data-aos="flip-left">
                       <div className="author_list_pp">
                         <Link
-                          to="/author"
+                          to={`/author?author=${item.authorId}`}
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           title={`Creator: ${item.title}`}
@@ -191,7 +198,7 @@ const NewItems = () => {
                           </div>
                         </div>
 
-                        <Link to="/item-details">
+                        <Link to={`/item-details/${item.nftId}`}>
                           <img
                             src={item.nftImage}
                             className="lazy nft__item_preview"
@@ -200,7 +207,7 @@ const NewItems = () => {
                         </Link>
                       </div>
                       <div className="nft__item_info">
-                        <Link to="/item-details">
+                        <Link to={`/item-details/${item.nftId}`}>
                           <h4>{item.title}</h4>
                         </Link>
                         <div className="nft__item_price">{item.price} ETH</div>
