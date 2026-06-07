@@ -77,23 +77,9 @@ const formatCountdown = (expiryDate, now) => {
   return `${seconds}s`;
 };
 
-const NewItems = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+const NewItems = ({ items = [], loading = false }) => {
   const [now, setNow] = useState(Date.now());
-
-  useEffect(() => {
-    fetch("https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems")
-      .then((response) => response.json())
-      .then((data) => {
-        setItems(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("New items fetch failed", error);
-        setLoading(false);
-      });
-  }, []);
+  const displayItems = (items || []).slice(0, 12);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
@@ -160,12 +146,12 @@ const NewItems = () => {
               </div>
             ) : (
               <Slider {...sliderSettings}>
-                {items.map((item) => (
+                {displayItems.map((item) => (
                   <div key={item.id} className="px-2">
                     <div className="nft__item" data-aos="flip-left">
                       <div className="author_list_pp">
                         <Link
-                          to={`/author?author=${item.authorId}`}
+                          to={`/author/${item.authorId}`}
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           title={`Creator: ${item.title}`}

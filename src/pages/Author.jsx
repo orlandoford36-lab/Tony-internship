@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import AuthorItems from "../components/author/AuthorItems";
 import { Link } from "react-router-dom";
 import Skeleton from "../components/UI/Skeleton";
@@ -7,19 +8,20 @@ const Author = () => {
   const [author, setAuthor] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const { authorId } = useParams();
+
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const authorId = params.get("author") || "73855012";
+    const id = authorId || "73855012";
 
     setLoading(true);
     fetch(
-      `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${authorId}`
+      `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`
     )
       .then((res) => res.json())
       .then((data) => setAuthor(data))
       .catch(() => setAuthor(null))
       .finally(() => setLoading(false));
-  }, []);
+  }, [authorId]);
 
   return (
     <div id="wrapper">

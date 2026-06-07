@@ -79,7 +79,7 @@ const ItemDetails = () => {
                       <h6>Owner</h6>
                       <div className="item_author">
                         <div className="author_list_pp">
-                          <Link to={item ? `/author?author=${item.ownerId}` : "/author"}>
+                          <Link to={item ? `/author/${item.ownerId}` : "/author"}>
                             {loading ? (
                               <Skeleton width="50px" height="50px" borderRadius="50%" />
                             ) : (
@@ -91,7 +91,7 @@ const ItemDetails = () => {
                           </Link>
                         </div>
                         <div className="author_list_info">
-                          <Link to={item ? `/author?author=${item.ownerId}` : "/author"}>
+                          <Link to={item ? `/author/${item.ownerId}` : "/author"}>
                             {loading ? <Skeleton width="120px" height="18px" borderRadius="8px" /> : item.ownerName}
                           </Link>
                         </div>
@@ -104,7 +104,7 @@ const ItemDetails = () => {
                       <h6>Creator</h6>
                       <div className="item_author">
                         <div className="author_list_pp">
-                          <Link to={item ? `/author?author=${item.creatorId}` : "/author"}>
+                          <Link to={item ? `/author/${item.creatorId}` : "/author"}>
                             {loading ? (
                               <Skeleton width="50px" height="50px" borderRadius="50%" />
                             ) : (
@@ -116,7 +116,7 @@ const ItemDetails = () => {
                           </Link>
                         </div>
                         <div className="author_list_info">
-                          <Link to={item ? `/author?author=${item.creatorId}` : "/author"}>
+                          <Link to={item ? `/author/${item.creatorId}` : "/author"}>
                             {loading ? <Skeleton width="120px" height="18px" borderRadius="8px" /> : item.creatorName}
                           </Link>
                         </div>

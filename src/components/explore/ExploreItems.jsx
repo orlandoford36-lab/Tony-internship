@@ -57,7 +57,7 @@ const ExploreItems = () => {
           >
             <div className="nft__item" data-aos="fade-up">
               <div className="author_list_pp">
-                <Link to={`/author?author=${item.authorId}`} data-bs-toggle="tooltip" data-bs-placement="top">
+                <Link to={`/author/${item.authorId}`} data-bs-toggle="tooltip" data-bs-placement="top">
                   {loading ? (
                     <Skeleton width={60} height={60} borderRadius="50%" />
                   ) : (

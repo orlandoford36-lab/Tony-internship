@@ -62,24 +62,8 @@ const NextArrow = ({ className, style, onClick }) => (
   </button>
 );
 
-const HotCollections = () => {
-  const [collections, setCollections] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const url = "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections";
-
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setCollections(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Hot collections fetch failed", error);
-        setLoading(false);
-      });
-  }, []);
+const HotCollections = ({ items = [], loading = false }) => {
+  const collections = items.slice(0, 8);
 
   useEffect(() => {
     if (!loading) {
@@ -160,7 +144,7 @@ const HotCollections = () => {
                         </Link>
                       </div>
                       <div className="nft_coll_pp">
-                        <Link to={`/author?author=${item.authorId}`}>
+                        <Link to={`/author/${item.authorId}`}>
                           <img
                             className="lazy pp-coll"
                             src={item.authorImage}

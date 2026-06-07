@@ -35,7 +35,7 @@ const TopSellers = () => {
               {sellers.map((seller, index) => (
                 <li key={seller.id || index}>
                   <div className="author_list_pp">
-                    <Link to={seller.authorId ? `/author?author=${seller.authorId}` : "/author"}>
+                    <Link to={seller.authorId ? `/author/${seller.authorId}` : "/author"}>
                       {loading ? (
                         <div
                           className="skeleton-box"
@@ -67,7 +67,7 @@ const TopSellers = () => {
                       </>
                     ) : (
                         <>
-                        <Link to={seller.authorId ? `/author?author=${seller.authorId}` : "/author"}>{seller.authorName}</Link>
+                        <Link to={seller.authorId ? `/author/${seller.authorId}` : "/author"}>{seller.authorName}</Link>
                         <span>{seller.price} ETH</span>
                       </>
                     )}
