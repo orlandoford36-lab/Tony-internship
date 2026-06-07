@@ -11,8 +11,8 @@ const LandingIntro = () => {
               <div className="text">
                 <h4 className="">Set up your wallet</h4>
                 <p>
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium, totam rem.
+                  Connect a crypto wallet to start buying and selling NFTs
+                  securely.
                 </p>
               </div>
               <i className="wm icon_wallet"></i>
@@ -24,8 +24,8 @@ const LandingIntro = () => {
               <div className="text">
                 <h4 className="">Add your NFT's</h4>
                 <p>
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium, totam rem.
+                  Upload your artwork and mint unique NFTs in just a few
+                  clicks.
                 </p>
               </div>
               <i className="wm icon_cloud-upload_alt"></i>
@@ -37,8 +37,8 @@ const LandingIntro = () => {
               <div className="text">
                 <h4 className="">Sell your NFT's</h4>
                 <p>
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium, totam rem.
+                  List your NFTs for sale or auction to reach collectors
+                  worldwide.
                 </p>
               </div>
               <i className="wm icon_tags_alt"></i>
