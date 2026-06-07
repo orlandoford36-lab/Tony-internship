@@ -33,6 +33,30 @@ const ExploreItems = () => {
 
   const sellers = loading ? new Array(8).fill({}) : items;
 
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatCountdown = (expiryDate, nowTs) => {
+    if (!expiryDate) return null;
+    const expiry = typeof expiryDate === "number" ? expiryDate : Date.parse(expiryDate);
+    const distance = expiry - nowTs;
+    if (distance <= 0) return "Expired";
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    if (days > 0) return `${days}d ${hours}h ${minutes}m`;
+    if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
+    if (minutes > 0) return `${minutes}m ${seconds}s`;
+    return `${seconds}s`;
+  };
+
   return (
     <>
       <div>
@@ -69,7 +93,15 @@ const ExploreItems = () => {
                 </Link>
               </div>
 
-              <div className="de_countdown">{!loading && item.expiryDate ? new Date(item.expiryDate).toLocaleString() : (loading ? <Skeleton width={120} height={16} borderRadius={8} /> : null)}</div>
+              {loading ? (
+                <div className="de_countdown">
+                  <Skeleton width={120} height={16} borderRadius={8} />
+                </div>
+              ) : (
+                item.expiryDate ? (
+                  <div className="de_countdown">{formatCountdown(item.expiryDate, now)}</div>
+                ) : null
+              )}
 
               <div className="nft__item_wrap">
                 <div className="nft__item_extra">
