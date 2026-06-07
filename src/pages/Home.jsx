@@ -8,6 +8,8 @@ import TopSellers from "../components/home/TopSellers";
 
 const ITEMS_ENDPOINT =
   "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore";
+const HOT_ENDPOINT =
+  "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections";
 
 const Home = () => {
   useEffect(() => {
@@ -16,6 +18,8 @@ const Home = () => {
 
   const [items, setItems] = useState([]);
   const [loadingItems, setLoadingItems] = useState(true);
+  const [hotCollections, setHotCollections] = useState([]);
+  const [loadingHot, setLoadingHot] = useState(true);
 
   useEffect(() => {
     setLoadingItems(true);
@@ -24,6 +28,13 @@ const Home = () => {
       .then((data) => setItems(data || []))
       .catch(() => setItems([]))
       .finally(() => setLoadingItems(false));
+
+    setLoadingHot(true);
+    fetch(HOT_ENDPOINT)
+      .then((res) => res.json())
+      .then((data) => setHotCollections(data || []))
+      .catch(() => setHotCollections([]))
+      .finally(() => setLoadingHot(false));
   }, []);
 
   return (
@@ -32,7 +43,7 @@ const Home = () => {
         <div id="top"></div>
         <Landing />
         <LandingIntro />
-        <HotCollections items={items} loading={loadingItems} />
+        <HotCollections collections={hotCollections} loading={loadingHot} />
         <NewItems items={items} loading={loadingItems} />
         <TopSellers />
         <BrowseByCategory />

@@ -62,8 +62,8 @@ const NextArrow = ({ className, style, onClick }) => (
   </button>
 );
 
-const HotCollections = ({ items = [], loading = false }) => {
-  const collections = items.slice(0, 8);
+const HotCollections = ({ collections = [], loading = false }) => {
+  const display = (collections || []).slice(0, 8);
 
   useEffect(() => {
     if (!loading) {
@@ -131,7 +131,7 @@ const HotCollections = ({ items = [], loading = false }) => {
                   { breakpoint: 576, settings: { slidesToShow: 1 } },
                 ]}
               >
-                {collections.map((item) => (
+                {display.map((item) => (
                   <div key={item.id} className="px-2">
                     <div className="nft_coll" data-aos="fade-right">
                       <div className="nft_wrap">
@@ -157,7 +157,7 @@ const HotCollections = ({ items = [], loading = false }) => {
                         <Link to="/explore">
                           <h4>{item.title}</h4>
                         </Link>
-                        <span>ERC-{item.code}</span>
+                        {item.code ? <span>ERC-{item.code}</span> : null}
                       </div>
                     </div>
                   </div>

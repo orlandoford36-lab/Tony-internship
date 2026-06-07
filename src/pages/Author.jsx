@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import AuthorBanner from "../images/author_banner.jpg";
 import AuthorItems from "../components/author/AuthorItems";
 import { Link } from "react-router-dom";
 import Skeleton from "../components/UI/Skeleton";
@@ -32,10 +33,8 @@ const Author = () => {
           id="profile_banner"
           aria-label="section"
           className="text-light"
-          data-bgimage={
-            author?.banner ? `url(${author.banner}) top` : "url(images/author_banner.jpg) top"
-          }
-          style={{ background: `url(${author?.banner || "/images/author_banner.jpg"}) top` }}
+          data-bgimage={AuthorBanner ? `url(${AuthorBanner}) top` : undefined}
+          style={{ background: `url(${author?.banner || AuthorBanner}) top` }}
         ></section>
 
         <section aria-label="section">

@@ -62,7 +62,7 @@ const NextArrow = ({ className, style, onClick }) => (
 );
 
 const formatCountdown = (expiryDate, now) => {
-  if (!expiryDate) return "Live now";
+  if (!expiryDate) return null;
   const distance = expiryDate - now;
   if (distance <= 0) return "Expired";
 
@@ -161,9 +161,15 @@ const NewItems = ({ items = [], loading = false }) => {
                         </Link>
                       </div>
 
-                      <div className="de_countdown">
-                        {formatCountdown(item.expiryDate, now)}
-                      </div>
+                      {loading ? (
+                        <div className="de_countdown">
+                          <div className="skeleton-box" style={{ width: 120, height: 18, borderRadius: 8 }} />
+                        </div>
+                      ) : (
+                        item.expiryDate ? (
+                          <div className="de_countdown">{formatCountdown(item.expiryDate, now)}</div>
+                        ) : null
+                      )}
 
                       <div className="nft__item_wrap">
                         <div className="nft__item_extra">
