@@ -4,7 +4,6 @@ import AuthorBanner from "../images/author_banner.jpg";
 import AuthorItems from "../components/author/AuthorItems";
 import { Link } from "react-router-dom";
 import Skeleton from "../components/UI/Skeleton";
-import React, { useState } from "react";
 
 const FollowButton = ({ initialCount = 0 }) => {
   const [following, setFollowing] = useState(false);
