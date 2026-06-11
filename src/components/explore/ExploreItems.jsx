@@ -31,7 +31,14 @@ const ExploreItems = () => {
     }
   }, [loading]);
 
-  const sellers = loading ? new Array(8).fill({}) : items;
+  const [visibleCount, setVisibleCount] = useState(8);
+
+  useEffect(() => {
+    // reset visible count when filter changes
+    setVisibleCount(8);
+  }, [filter]);
+
+  const sellers = loading ? new Array(visibleCount).fill({}) : (items || []).slice(0, visibleCount);
 
   const [now, setNow] = useState(Date.now());
 
@@ -163,9 +170,15 @@ const ExploreItems = () => {
       </div>
 
       <div className="col-md-12 text-center">
-        <Link to="" id="loadmore" className="btn-main lead">
-          Load more
-        </Link>
+        {!loading && items && visibleCount < items.length ? (
+          <button
+            id="loadmore"
+            className="btn-main lead"
+            onClick={() => setVisibleCount((c) => Math.min(items.length, c + 4))}
+          >
+            Load more
+          </button>
+        ) : null}
       </div>
     </>
   );
