@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AuthorBanner from "../images/author_banner.jpg";
 import AuthorItems from "../components/author/AuthorItems";
-import { Link } from "react-router-dom";
+// react-router Link not used in this file
 import Skeleton from "../components/UI/Skeleton";
 
 const FollowButton = ({ initialCount = 0 }) => {
