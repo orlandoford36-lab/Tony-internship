@@ -11,7 +11,11 @@ const ExploreItems = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    // Ensure loading state and placeholders are shown on mount, filter change, or URL search change
     setLoading(true);
+    setItems([]);
+    setVisibleCount(8);
+
     let url = "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore";
     if (filter) url += `?filter=${filter}`;
 
@@ -26,7 +30,7 @@ const ExploreItems = () => {
         setItems([]);
         setLoading(false);
       });
-  }, [filter]);
+  }, [filter, location.search]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

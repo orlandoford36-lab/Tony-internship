@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AuthorBanner from "../images/author_banner.jpg";
+import AuthorThumbnail from "../images/author_thumbnail.jpg";
 import AuthorItems from "../components/author/AuthorItems";
 // react-router Link not used in this file
 import Skeleton from "../components/UI/Skeleton";
@@ -23,7 +24,6 @@ const FollowButton = ({ initialCount = 0, onChange = () => {} }) => {
   return (
     <button className="btn-main" onClick={toggleFollow} aria-pressed={following}>
       {following ? "Following" : "Follow"}
-      <span style={{ marginLeft: 8 }} className="small-text">{count}</span>
     </button>
   );
 };
@@ -70,10 +70,7 @@ const Author = () => {
                       {loading ? (
                         <Skeleton width="150px" height="150px" borderRadius="50%" />
                       ) : (
-                        <img
-                          src={author?.authorImage || "/images/author_thumbnail.jpg"}
-                          alt="author"
-                        />
+                        <img src={author?.authorImage || AuthorThumbnail} alt="author" />
                       )}
 
                       <i className="fa fa-check"></i>

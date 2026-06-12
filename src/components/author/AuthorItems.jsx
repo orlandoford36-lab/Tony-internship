@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import AuthorThumbnail from "../../images/author_thumbnail.jpg";
 import AOS from "aos";
 import { Link } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
@@ -35,7 +36,11 @@ const AuthorItems = ({ items, loading }) => {
       <div className="nft__item" data-aos="zoom-in">
         <div className="author_list_pp">
           <Link to={`/author/${item.authorId}`}>
-            <img className="lazy" src={item.authorImage || "/images/author_thumbnail.jpg"} alt="" />
+            <img
+              className="lazy"
+              src={item.authorImage || AuthorThumbnail}
+              alt={item.authorName || "author"}
+            />
             <i className="fa fa-check"></i>
           </Link>
         </div>

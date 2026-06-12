@@ -22,6 +22,32 @@
   --title-font: "DM Sans", Helvetica, Arial, sans-serif;
 }
 
+/* Fix: correct common cursor typo 'poInter' by ensuring interactive elements use pointer */
+#menu-btn,
+.toggle,
+.play-pause,
+.close__button,
+.d-btn-close,
+.de-menu-profile,
+.de-menu-notification,
+.accordion-section-title,
+.expand-custom .toggle,
+.owl-prev,
+.owl-next,
+.prev-slider,
+.next-slider,
+.owl-arrow,
+.fp-wrap .fp-icon,
+.de_tab .de_nav li span,
+.de_tab .de_nav li span i,
+.btn,
+.btn-main,
+.btn-line,
+.btn-text,
+.btn-fx {
+  cursor: pointer;
+}
+
 /* ================================================== */
 
 /* body */
@@ -3134,7 +3160,7 @@ a.btn-line:hover {
 
 header:not(.header-light) a.btn-line,
 .dark-scheme a.btn-line,
-.dark-schem a.btn-line:hover {
+.dark-scheme a.btn-line:hover {
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.1);
 }

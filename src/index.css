@@ -10,3 +10,9 @@
 @import "./css/styles/style.css";
 @import "./css/colors/scheme-01.css";
 @import "./css/styles/coloring.css";
+
+/* Hide slick default pseudo-element arrows */
+.slick-next:before,
+.slick-prev:before {
+	display: none !important;
+}

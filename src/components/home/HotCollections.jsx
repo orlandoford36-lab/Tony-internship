@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -63,7 +63,9 @@ const NextArrow = ({ className, style, onClick }) => (
 );
 
 const HotCollections = ({ collections = [], loading = false }) => {
-  const display = (collections || []).slice(0, 8);
+  const [visibleItems, setVisibleItems] = useState(8);
+
+  const displayItems = (collections || []).slice(0, visibleItems);
 
   useEffect(() => {
     if (!loading) {
@@ -131,7 +133,7 @@ const HotCollections = ({ collections = [], loading = false }) => {
                   { breakpoint: 576, settings: { slidesToShow: 1 } },
                 ]}
               >
-                {display.map((item) => (
+                {displayItems.map((item) => (
                   <div key={item.id} className="px-2">
                     <div className="nft_coll" data-aos="fade-right">
                       <div className="nft_wrap">
@@ -163,6 +165,17 @@ const HotCollections = ({ collections = [], loading = false }) => {
                   </div>
                 ))}
               </Slider>
+
+              {visibleItems < collections.length && (
+                <div style={{ textAlign: "center", marginTop: 20 }}>
+                  <button
+                    className="btn-main"
+                    onClick={() => setVisibleItems((prev) => prev + 4)}
+                  >
+                    Load More
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
