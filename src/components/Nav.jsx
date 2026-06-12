@@ -1,9 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from "../images/Ultraverse.png";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 
 const Nav = () => {
+  const navigate = useNavigate();
+
+  const onQuickSearchKey = (e) => {
+    if (e.key === "Enter") {
+      const val = e.target.value.trim();
+      navigate(`/explore${val ? `?search=${encodeURIComponent(val)}` : ""}`);
+    }
+  };
+
   const openNav = () => {
     document.body.classList += "menu__open";
   };
@@ -33,6 +43,7 @@ const Nav = () => {
                     name="quick_search"
                     placeholder="search item here..."
                     type="text"
+                    onKeyDown={onQuickSearchKey}
                   />
                 </div>
               </div>

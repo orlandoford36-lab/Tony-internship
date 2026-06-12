@@ -16,11 +16,14 @@ const ExploreItems = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
+      import { useLocation } from "react-router-dom";
         setItems(data);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Explore fetch failed", err);
+        const location = useLocation();
+        const [searchTerm, setSearchTerm] = useState("");
         setLoading(false);
       });
   }, [filter]);
@@ -39,6 +42,11 @@ const ExploreItems = () => {
   }, [filter]);
 
   const sellers = loading ? new Array(visibleCount).fill({}) : (items || []).slice(0, visibleCount);
+        useEffect(() => {
+          const params = new URLSearchParams(location.search);
+          const q = (params.get("search") || "").trim();
+          setSearchTerm(q);
+        }, [location.search]);
 
   const [now, setNow] = useState(Date.now());
 
@@ -47,7 +55,11 @@ const ExploreItems = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatCountdown = (expiryDate, nowTs) => {
+        const filtered = searchTerm
+          ? (items || []).filter((it) => (it.title || "").toLowerCase().includes(searchTerm.toLowerCase()))
+          : items || [];
+
+        const sellers = loading ? new Array(visibleCount).fill({}) : filtered.slice(0, visibleCount);
     if (!expiryDate) return null;
     const expiry = typeof expiryDate === "number" ? expiryDate : Date.parse(expiryDate);
     const distance = expiry - nowTs;
