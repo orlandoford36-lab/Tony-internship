@@ -5,15 +5,17 @@ import AuthorItems from "../components/author/AuthorItems";
 // react-router Link not used in this file
 import Skeleton from "../components/UI/Skeleton";
 
-const FollowButton = ({ initialCount = 0 }) => {
+const FollowButton = ({ initialCount = 0, onChange = () => {} }) => {
   const [following, setFollowing] = useState(false);
   const [count, setCount] = useState(initialCount);
 
   const toggleFollow = () => {
     if (following) {
       setCount((c) => Math.max(0, c - 1));
+      onChange(-1);
     } else {
       setCount((c) => c + 1);
+      onChange(1);
     }
     setFollowing((f) => !f);
   };
@@ -103,7 +105,14 @@ const Author = () => {
                         {loading ? (
                           <button className="btn-main" disabled>Follow</button>
                         ) : (
-                          <FollowButton initialCount={author?.followers || 0} />
+                          <FollowButton
+                            initialCount={author?.followers || 0}
+                            onChange={(delta) =>
+                              setAuthor((a) =>
+                                a ? { ...a, followers: Math.max(0, (a.followers || 0) + delta) } : a
+                              )
+                            }
+                          />
                         )}
                       </div>
                     </div>

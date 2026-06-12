@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const HeaderExplore = () => {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const trimmed = (query || "").trim();
+    if (trimmed) navigate(`/explore?search=${encodeURIComponent(trimmed)}`);
+    else navigate(`/explore`);
+  };
+
   return (
     <div className="col-lg-12">
       <div className="items_filter">
         <form
-          action="blank.php"
           className="row form-dark"
           id="form_quick_search"
-          method="post"
           name="form_quick_search"
+          onSubmit={handleSubmit}
         >
           <div className="col text-center">
             <input
@@ -18,10 +28,12 @@ const HeaderExplore = () => {
               name="name_1"
               placeholder="search item here..."
               type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />{" "}
-            <a href="#" id="btn-submit">
+            <button id="btn-submit" type="submit">
               <i className="fa fa-search bg-color-secondary"></i>
-            </a>
+            </button>
             <div className="clearfix"></div>
           </div>
         </form>

@@ -40,13 +40,14 @@ const ExploreItems = () => {
 
   const [visibleCount, setVisibleCount] = useState(8);
 
-  useEffect(() => {
-    setVisibleCount(8);
-  }, [filter, searchTerm]);
-
   const filtered = searchTerm
     ? (items || []).filter((it) => (it.title || "").toLowerCase().includes(searchTerm.toLowerCase()))
     : items || [];
+
+  useEffect(() => {
+    // initialize visible count based on available items (8 initially)
+    setVisibleCount(Math.min(8, (filtered || []).length));
+  }, [filtered]);
 
   const sellers = loading ? new Array(visibleCount).fill({}) : filtered.slice(0, visibleCount);
 
