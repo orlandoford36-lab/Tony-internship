@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AOS from "aos";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
 
 const ExploreItems = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -16,50 +18,45 @@ const ExploreItems = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-      import { useLocation } from "react-router-dom";
-        setItems(data);
+        setItems(data || []);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Explore fetch failed", err);
-        const location = useLocation();
-        const [searchTerm, setSearchTerm] = useState("");
+        setItems([]);
         setLoading(false);
       });
   }, [filter]);
 
   useEffect(() => {
-    if (!loading) {
-      AOS.refresh();
-    }
+    const params = new URLSearchParams(location.search);
+    const q = (params.get("search") || "").trim();
+    setSearchTerm(q);
+  }, [location.search]);
+
+  useEffect(() => {
+    if (!loading) AOS.refresh();
   }, [loading]);
 
   const [visibleCount, setVisibleCount] = useState(8);
 
   useEffect(() => {
-    // reset visible count when filter changes
     setVisibleCount(8);
-  }, [filter]);
+  }, [filter, searchTerm]);
 
-  const sellers = loading ? new Array(visibleCount).fill({}) : (items || []).slice(0, visibleCount);
-        useEffect(() => {
-          const params = new URLSearchParams(location.search);
-          const q = (params.get("search") || "").trim();
-          setSearchTerm(q);
-        }, [location.search]);
+  const filtered = searchTerm
+    ? (items || []).filter((it) => (it.title || "").toLowerCase().includes(searchTerm.toLowerCase()))
+    : items || [];
+
+  const sellers = loading ? new Array(visibleCount).fill({}) : filtered.slice(0, visibleCount);
 
   const [now, setNow] = useState(Date.now());
-
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-        const filtered = searchTerm
-          ? (items || []).filter((it) => (it.title || "").toLowerCase().includes(searchTerm.toLowerCase()))
-          : items || [];
-
-        const sellers = loading ? new Array(visibleCount).fill({}) : filtered.slice(0, visibleCount);
+  const formatCountdown = (expiryDate, nowTs) => {
     if (!expiryDate) return null;
     const expiry = typeof expiryDate === "number" ? expiryDate : Date.parse(expiryDate);
     const distance = expiry - nowTs;
@@ -79,11 +76,7 @@ const ExploreItems = () => {
   return (
     <>
       <div>
-        <select
-          id="filter-items"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        >
+        <select id="filter-items" value={filter} onChange={(e) => setFilter(e.target.value)}>
           <option value="">Default</option>
           <option value="price_low_to_high">Price, Low to High</option>
           <option value="price_high_to_low">Price, High to Low</option>
@@ -117,9 +110,7 @@ const ExploreItems = () => {
                   <Skeleton width={120} height={16} borderRadius={8} />
                 </div>
               ) : (
-                item.expiryDate ? (
-                  <div className="de_countdown">{formatCountdown(item.expiryDate, now)}</div>
-                ) : null
+                item.expiryDate ? <div className="de_countdown">{formatCountdown(item.expiryDate, now)}</div> : null
               )}
 
               <div className="nft__item_wrap">
@@ -182,12 +173,8 @@ const ExploreItems = () => {
       </div>
 
       <div className="col-md-12 text-center">
-        {!loading && items && visibleCount < items.length ? (
-          <button
-            id="loadmore"
-            className="btn-main lead"
-            onClick={() => setVisibleCount((c) => Math.min(items.length, c + 4))}
-          >
+        {!loading && filtered && visibleCount < filtered.length ? (
+          <button id="loadmore" className="btn-main lead" onClick={() => setVisibleCount((c) => Math.min(filtered.length, c + 4))}>
             Load more
           </button>
         ) : null}
