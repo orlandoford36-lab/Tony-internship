@@ -62,7 +62,7 @@ const NextArrow = ({ className, style, onClick }) => (
 );
 
 const formatCountdown = (expiryDate, now) => {
-  if (!expiryDate) return "Live now";
+  if (!expiryDate) return "";
   const distance = expiryDate - now;
   if (distance <= 0) return "Expired";
 
